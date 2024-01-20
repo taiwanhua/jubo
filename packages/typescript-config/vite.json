@@ -3,16 +3,24 @@
   "display": "Vite",
   "extends": "./base.json",
   "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["ESNext", "DOM"],
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "noImplicitReturns": true
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/vite-env.d.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

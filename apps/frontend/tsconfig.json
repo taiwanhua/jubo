@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/typescript-config/vite.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"],
+    },
+  },
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts", ".eslintrc.cjs"],
+  "exclude": ["node_modules"],
+}
