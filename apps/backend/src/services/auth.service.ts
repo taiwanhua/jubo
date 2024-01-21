@@ -2,11 +2,11 @@ import { PrismaClient } from "@prisma/client";
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { Service } from "typedi";
-import { SECRET_KEY } from "@config";
-import type { CreateUserDto } from "@dtos/users.dto";
-import { HttpException } from "@exceptions/httpException";
-import type { DataStoredInToken, TokenData } from "@interfaces/auth.interface";
-import type { User } from "@interfaces/users.interface";
+import { SECRET_KEY } from "@/config";
+import type { CreateUserDto } from "@/dtos/users.dto";
+import { HttpException } from "@/exceptions/httpException";
+import type { DataStoredInToken, TokenData } from "@/interfaces/auth.interface";
+import type { User } from "@/interfaces/reference.interface";
 
 @Service()
 export class AuthService {

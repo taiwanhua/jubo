@@ -7,7 +7,6 @@ export const createPatientDto = z.object({
 export type CreatePatientDto = z.infer<typeof createPatientDto>;
 
 export const updatePatientDto = z.object({
-  id: z.string(),
   name: z.string(),
 });
 

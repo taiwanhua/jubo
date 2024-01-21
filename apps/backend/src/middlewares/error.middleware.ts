@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import type { HttpException } from "@exceptions/httpException";
-import { logger } from "@utils/logger";
+import type { HttpException } from "@/exceptions/httpException";
+import { logger } from "@/utils/logger";
 
 export const ErrorMiddleware = (
   error: HttpException,

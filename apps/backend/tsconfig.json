@@ -4,9 +4,9 @@
     "target": "ES2020",
     "lib": ["ES2020", "ESNext.AsyncIterable"],
 
-    // routing-controllers, class-transformer, reflect-metadata
-    // "experimentalDecorators": true,
-    // "emitDecoratorMetadata": true,
+    // reflect-metadata
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
 
     "moduleResolution": "node",
     "module": "commonjs",

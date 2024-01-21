@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
-import type { RequestWithUser } from "@interfaces/auth.interface";
-import type { User } from "@interfaces/users.interface";
-import { AuthService } from "@services/auth.service";
+import type { RequestWithUser } from "@/interfaces/auth.interface";
+import type { User } from "@/interfaces/reference.interface";
+import { AuthService } from "@/services/auth.service";
 
 export class AuthController {
   public auth = Container.get(AuthService);

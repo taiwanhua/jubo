@@ -1,13 +1,17 @@
 import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
-import type { Reference } from "@interfaces/reference.interface";
-import { ReferenceService } from "@services/reference.service";
+import type { Reference } from "@/interfaces/reference.interface";
+import { ReferenceService } from "@/services/reference.service";
+import type {
+  CreateReferenceDto,
+  UpdateReferenceDto,
+} from "@/dtos/reference.dto";
 
 export class ReferenceController {
   public reference = Container.get(ReferenceService);
 
   public getReferences = async (
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
@@ -27,7 +31,7 @@ export class ReferenceController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const referenceId = Number(req.params.id);
+      const referenceId = req.params.id!;
       const findOneReferenceData: Reference =
         await this.reference.findReferenceById(referenceId);
 
@@ -43,7 +47,7 @@ export class ReferenceController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const referenceData: Reference = req.body;
+      const referenceData: CreateReferenceDto = req.body;
       const createReferenceData: Reference =
         await this.reference.createReference(referenceData);
 
@@ -59,8 +63,8 @@ export class ReferenceController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const referenceId = Number(req.params.id);
-      const referenceData: Reference = req.body;
+      const referenceId = req.params.id!;
+      const referenceData: UpdateReferenceDto = req.body;
       const updateReferenceData: Reference =
         await this.reference.updateReference(referenceId, referenceData);
 
@@ -76,7 +80,7 @@ export class ReferenceController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const referenceId = Number(req.params.id);
+      const referenceId = req.params.id!;
       const deleteReferenceData: Reference =
         await this.reference.deleteReference(referenceId);
 

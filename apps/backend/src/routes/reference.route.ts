@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { ReferenceController } from "@controllers/reference.controller";
-import { CreateReferenceDto } from "@dtos/reference.dto";
-import { Routes } from "@interfaces/routes.interface";
-import { validationMiddleware } from "@/middlewares/validation.middleware";
+import { ReferenceController } from "@/controllers/reference.controller";
+import {
+  assignReferenceDto,
+  reassignReferenceDto,
+  unassignReferenceDto,
+} from "@/dtos/reference.dto";
+import { validationRequestBodyMiddleware } from "@/middlewares/validation.middleware";
+import { Routes } from "@/interfaces/routes.interface";
 
 export class ReferenceRoute implements Routes {
-  public path = "/reference";
+  public path = "/references";
   public router = Router();
   public reference = new ReferenceController();
 
@@ -14,21 +18,34 @@ export class ReferenceRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.reference.getReferences);
-    this.router.get(`${this.path}/:id(\\d+)`, this.reference.getReferenceById);
-    this.router.post(
-      `${this.path}`,
-      validationMiddleware(CreateReferenceDto),
-      this.reference.createReference,
-    );
     this.router.put(
-      `${this.path}/:id(\\d+)`,
-      validationMiddleware(CreateReferenceDto, true),
+      `${this.path}/assign`,
+      validationRequestBodyMiddleware(assignReferenceDto),
       this.reference.updateReference,
     );
-    this.router.delete(
-      `${this.path}/:id(\\d+)`,
-      this.reference.deleteReference,
+    this.router.put(
+      `${this.path}/unassign`,
+      validationRequestBodyMiddleware(unassignReferenceDto),
+      this.reference.updateReference,
     );
+    this.router.put(
+      `${this.path}/reassign`,
+      validationRequestBodyMiddleware(reassignReferenceDto),
+      this.reference.updateReference,
+    );
+
+    // this.router.get(`${this.path}`, this.reference.getReferences);
+    // this.router.get(`${this.path}/:id`, this.reference.getReferenceById);
+    // this.router.post(
+    //   `${this.path}`,
+    //   validationRequestBodyMiddleware(createReferenceDto),
+    //   this.reference.createReference,
+    // );
+    // this.router.put(
+    //   `${this.path}/:id`,
+    //   validationRequestBodyMiddleware(updateReferenceDto, true),
+    //   this.reference.updateReference,
+    // );
+    // this.router.delete(`${this.path}/:id`, this.reference.deleteReference);
   }
 }

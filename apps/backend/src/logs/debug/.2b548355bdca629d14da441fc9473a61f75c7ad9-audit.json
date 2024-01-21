@@ -6,9 +6,9 @@
     "auditLog": "D:\\project\\jubo\\apps\\backend\\src\\logs\\debug\\.2b548355bdca629d14da441fc9473a61f75c7ad9-audit.json",
     "files": [
         {
-            "date": 1705820391707,
-            "name": "D:\\project\\jubo\\apps\\backend\\src\\logs\\debug\\2024-01-21.log",
-            "hash": "58268e2ec6fec050a56d94809154e030df115f31c02713b71d4b9dbcc2fa060b"
+            "date": 1705854430417,
+            "name": "D:\\project\\jubo\\apps\\backend\\src\\logs\\debug\\2024-01-22.log",
+            "hash": "1b6b16f3554e9db1d11c2b43febb1f710a2f93c34ec59e5bbcbb0e15b059f453"
         }
     ],
     "hashType": "sha256"

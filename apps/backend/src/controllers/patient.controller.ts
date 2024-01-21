@@ -1,13 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
-import type { Patient } from "@interfaces/patient.interface";
-import { PatientService } from "@services/patient.service";
+import type { Patient } from "@/interfaces/patient.interface";
+import { PatientService } from "@/services/patient.service";
+import type { CreatePatientDto, UpdatePatientDto } from "@/dtos/patient.dto";
 
 export class PatientController {
   public patient = Container.get(PatientService);
 
   public getPatients = async (
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
@@ -27,7 +28,7 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = Number(req.params.id);
+      const patientId = req.params.id!;
       const findOnePatientData: Patient = await this.patient.findPatientById(
         patientId,
       );
@@ -44,7 +45,7 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientData: Patient = req.body;
+      const patientData: CreatePatientDto = req.body;
       const createPatientData: Patient = await this.patient.createPatient(
         patientData,
       );
@@ -61,8 +62,8 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = Number(req.params.id);
-      const patientData: Patient = req.body;
+      const patientId = req.params.id!;
+      const patientData: UpdatePatientDto = req.body;
       const updatePatientData: Patient = await this.patient.updatePatient(
         patientId,
         patientData,
@@ -80,7 +81,7 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = Number(req.params.id);
+      const patientId = req.params.id!;
       const deletePatientData: Patient = await this.patient.deletePatient(
         patientId,
       );

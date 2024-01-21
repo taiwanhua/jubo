@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { HttpException } from "@exceptions/httpException";
+import { HttpException } from "@/exceptions/httpException";
 import { ZodTypeAny } from "zod";
 
 /**
@@ -7,7 +7,9 @@ import { ZodTypeAny } from "zod";
  * @remarks - validation data from user is correct
  * @param type - Dto Schema Type
  */
-export const validationMiddleware = <DtoSchemaType extends ZodTypeAny>(
+export const validationRequestBodyMiddleware = <
+  DtoSchemaType extends ZodTypeAny,
+>(
   type: DtoSchemaType,
 ) => {
   return (req: Request, _res: Response, next: NextFunction) => {

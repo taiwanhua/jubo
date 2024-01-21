@@ -2,7 +2,7 @@ import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { format, createLogger, transports } from "winston";
 import WinstonDaily from "winston-daily-rotate-file";
-import { LOG_DIR } from "@config";
+import { LOG_DIR } from "@/config";
 
 // logs dir
 const logDir: string = join(__dirname, LOG_DIR ?? "");

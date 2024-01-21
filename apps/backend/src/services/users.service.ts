@@ -1,8 +1,8 @@
 import { hash } from "bcrypt";
 import { Service } from "typedi";
-import type { CreateUserDto } from "@dtos/users.dto";
+import type { CreateUserDto } from "@/dtos/users.dto";
 import { HttpException } from "@/exceptions/httpException";
-import type { User } from "@interfaces/users.interface";
+import type { User } from "@/interfaces/reference.interface";
 import { prisma } from "@/prisma/client";
 
 @Service()

@@ -1,8 +1,8 @@
 import { PrismaClient, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import request from "supertest";
-import App from "@/app";
-import { CreateUserDto } from "@dtos/users.dto";
+import { App } from "@/app";
+import { CreateUserDto } from "@/dtos/users.dto";
 import UserRoute from "@/routes/patient.route";
 
 afterAll(async () => {

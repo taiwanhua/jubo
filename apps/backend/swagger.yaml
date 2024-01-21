@@ -1,0 +1,231 @@
+tags:
+  - name: patients
+    description: patients API
+  - name: orders
+    description: orders API
+  - name: references
+    description: references API
+
+paths:
+  # [GET] patients
+  /patients:
+    get:
+      tags:
+        - patients
+      summary: Find All Patients
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+
+    # [POST] patients
+    post:
+      tags:
+        - patients
+      summary: Add Patient
+      parameters:
+        - name: body
+          in: body
+          description: Patient Data
+          required: true
+          schema:
+            $ref: "#/definitions/patientData"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] patients/id
+  /patients/{id}:
+    get:
+      tags:
+        - patients
+      summary: Find Patient By Id
+      parameters:
+        - name: id
+          in: path
+          description: Patient Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [PUT] patients/id
+    put:
+      tags:
+        - patients
+      summary: Update Patient By Id
+      parameters:
+        - name: id
+          in: path
+          description: Patient Id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Patient Data
+          required: true
+          schema:
+            $ref: "#/definitions/patientData"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [DELETE] patients/id
+    delete:
+      tags:
+        - patients
+      summary: Delete Patient By Id
+      parameters:
+        - name: id
+          in: path
+          description: Patient Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] orders
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: Find All Orders
+      responses:
+        200:
+          description: "OK"
+        500:
+          description: "Server Error"
+
+    # [POST] orders
+    post:
+      tags:
+        - orders
+      summary: Add Order
+      parameters:
+        - name: body
+          in: body
+          description: Order Data
+          required: true
+          schema:
+            $ref: "#/definitions/orderData"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [GET] orders/id
+  /orders/{id}:
+    get:
+      tags:
+        - orders
+      summary: Find Order By Id
+      parameters:
+        - name: id
+          in: path
+          description: Order Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [PUT] orders/id
+    put:
+      tags:
+        - orders
+      summary: Update Order By Id
+      parameters:
+        - name: id
+          in: path
+          description: Order Id
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: Order Data
+          required: true
+          schema:
+            $ref: "#/definitions/orderData"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+    # [DELETE] orders/id
+    delete:
+      tags:
+        - orders
+      summary: Delete Order By Id
+      parameters:
+        - name: id
+          in: path
+          description: Order Id
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+# definitions
+definitions:
+  patientData:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Patient Name
+  orderData:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        description: Order Message
+
+schemes:
+  - https
+  - http

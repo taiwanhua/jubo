@@ -1,13 +1,14 @@
 import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
-import type { Order } from "@interfaces/order.interface";
-import { OrderService } from "@services/order.service";
+import type { Order } from "@/interfaces/order.interface";
+import { OrderService } from "@/services/order.service";
+import type { CreateOrderDto, UpdateOrderDto } from "@/dtos/order.dto";
 
 export class OrderController {
   public order = Container.get(OrderService);
 
   public getOrders = async (
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
@@ -26,7 +27,7 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = Number(req.params.id);
+      const orderId = req.params.id!;
       const findOneOrderData: Order = await this.order.findOrderById(orderId);
 
       res.status(200).json({ data: findOneOrderData, message: "findOne" });
@@ -41,7 +42,7 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderData: Order = req.body;
+      const orderData: CreateOrderDto = req.body;
       const createOrderData: Order = await this.order.createOrder(orderData);
 
       res.status(201).json({ data: createOrderData, message: "created" });
@@ -56,8 +57,8 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = Number(req.params.id);
-      const orderData: Order = req.body;
+      const orderId = req.params.id!;
+      const orderData: UpdateOrderDto = req.body;
       const updateOrderData: Order = await this.order.updateOrder(
         orderId,
         orderData,
@@ -75,7 +76,7 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = Number(req.params.id);
+      const orderId = req.params.id!;
       const deleteOrderData: Order = await this.order.deleteOrder(orderId);
 
       res.status(200).json({ data: deleteOrderData, message: "deleted" });
