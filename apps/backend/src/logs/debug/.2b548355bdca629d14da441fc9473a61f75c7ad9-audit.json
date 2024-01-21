@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "D:\\project\\jubo\\apps\\backend\\src\\logs\\debug\\.2b548355bdca629d14da441fc9473a61f75c7ad9-audit.json",
+    "files": [
+        {
+            "date": 1705820391707,
+            "name": "D:\\project\\jubo\\apps\\backend\\src\\logs\\debug\\2024-01-21.log",
+            "hash": "58268e2ec6fec050a56d94809154e030df115f31c02713b71d4b9dbcc2fa060b"
+        }
+    ],
+    "hashType": "sha256"
+}
