@@ -63,7 +63,8 @@ export class App {
   private initializeSwagger(): void {
     const options = {
       swaggerDefinition: {
-        openapi: "3.0.0",
+        // OAS 2.0
+        // https://editor.swagger.io/
         info: {
           title: "REST API",
           version: "1.0.0",
