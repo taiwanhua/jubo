@@ -6,21 +6,35 @@ import type {
   ReassignRelevanceDto,
   CreateRelevanceDto,
   UpdateRelevanceDto,
+  FindManyRelevanceArgsDto,
+  ReassignRelevanceReturnDto,
 } from "@/dtos/relevance.dto";
 import { HttpException } from "@/exceptions/httpException";
 import type { Relevance } from "@/interfaces/relevance.interface";
 import prisma from "@/prisma/client";
 import { fillEmptyArray } from "@/utils/fillEmptyArray";
 
-export type ReassignRelevanceReturn = [Relevance[], number];
-
 @Service()
 export class RelevanceService {
-  // public relevance = new PrismaClient().relevance;
   public relevance = prisma.relevance;
 
-  public async findAllRelevance(): Promise<Relevance[]> {
-    const allRelevance = await this.relevance.findMany();
+  public async findManyRelevance(
+    args?: FindManyRelevanceArgsDto,
+  ): Promise<Relevance[]> {
+    const allRelevance = await this.relevance.findMany(
+      args
+        ? {
+            where: {
+              AND: {
+                type: args.type,
+                first_id: { in: args.first_ids },
+                second_id: { in: args.second_ids },
+                third_id: { in: args.third_ids },
+              },
+            },
+          }
+        : undefined,
+    );
     return allRelevance;
   }
 
@@ -158,12 +172,15 @@ export class RelevanceService {
 
   public async reassignRelevance(
     relevanceData: ReassignRelevanceDto,
-  ): Promise<ReassignRelevanceReturn> {
+  ): Promise<ReassignRelevanceReturnDto> {
     const { assign, unassign } = relevanceData;
 
-    const reassignRelevanceData: ReassignRelevanceReturn =
+    const reassignRelevanceData: ReassignRelevanceReturnDto =
       await prisma.$transaction(async (tx) => {
-        const reassignRelevanceReturn: ReassignRelevanceReturn = [[], 0];
+        const reassignRelevanceReturn: ReassignRelevanceReturnDto = {
+          assignRelevances: [],
+          unassignCount: 0,
+        };
 
         // unassign
         const { count } = await tx.relevance.deleteMany({
@@ -177,7 +194,7 @@ export class RelevanceService {
           },
         });
 
-        reassignRelevanceReturn[1] = count;
+        reassignRelevanceReturn.unassignCount = count;
 
         // assign
         const firstIdsFilled = fillEmptyArray(assign.first_ids ?? [], "");
@@ -202,7 +219,7 @@ export class RelevanceService {
 
         const createRelevances = await Promise.all(promises);
 
-        reassignRelevanceReturn[0] = createRelevances;
+        reassignRelevanceReturn.assignRelevances = createRelevances;
 
         return reassignRelevanceReturn;
       });

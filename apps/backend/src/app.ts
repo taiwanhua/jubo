@@ -70,6 +70,7 @@ export class App {
         },
       },
       apis: ["swagger.yaml"],
+      // apis: [`${__dirname}/routes/*.ts`],
     };
 
     const specs = swaggerJSDoc(options);

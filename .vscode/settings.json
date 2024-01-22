@@ -19,7 +19,9 @@
     "openapi",
     "typedi",
     "dtos",
-    "envalid"
+    "envalid",
+    "tsdoc",
+    "fontsource"
   ],
   // https://github.com/microsoft/vscode-eslint/issues/1620
   // "eslint.experimental.useFlatConfig": false,

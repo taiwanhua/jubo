@@ -1,16 +1,29 @@
 import { Service } from "typedi";
-import type { CreateOrderDto, UpdateOrderDto } from "@/dtos/order.dto";
+import type {
+  CreateOrderDto,
+  CreatePatientOrderDto,
+  FindManyOrderArgsDto,
+  UpdateOrderDto,
+} from "@/dtos/order.dto";
 import { HttpException } from "@/exceptions/httpException";
 import type { Order } from "@/interfaces/order.interface";
 import prisma from "@/prisma/client";
 
 @Service()
 export class OrderService {
-  // public order = new PrismaClient().order;
   public order = prisma.order;
+  public relevance = prisma.relevance;
 
-  public async findAllOrder(): Promise<Order[]> {
-    const allOrder = await this.order.findMany();
+  public async findManyOrder(args?: FindManyOrderArgsDto): Promise<Order[]> {
+    const allOrder = await this.order.findMany(
+      args
+        ? {
+            where: {
+              id: { in: args.ids },
+            },
+          }
+        : undefined,
+    );
     return allOrder;
   }
 
@@ -71,5 +84,29 @@ export class OrderService {
       where: { id: orderId },
     });
     return deleteOrderData;
+  }
+
+  public async createPatientOrder({
+    patientId,
+    ...orderData
+  }: CreatePatientOrderDto): Promise<Order> {
+    const createPatientOrderData = await prisma.$transaction(async (tx) => {
+      const createOrderData: Order = await tx.order.create({
+        data: { ...orderData },
+      });
+
+      await tx.relevance.create({
+        data: {
+          type: "PatientOrder",
+          first_id: patientId,
+          second_id: createOrderData.id,
+          third_id: "",
+        },
+      });
+
+      return createOrderData;
+    });
+
+    return createPatientOrderData;
   }
 }

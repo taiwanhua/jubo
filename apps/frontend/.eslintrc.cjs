@@ -12,5 +12,6 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+    "react/function-component-definition": "off",
   },
 };

@@ -11,14 +11,28 @@ const countUndefinedOrEmpty = (
   }, 0);
 };
 
-const relevanceDto = z.object({
+export const relevanceDto = z.object({
+  id: z.string(),
+  type: z.string(),
+  first_id: z.string(),
+  second_id: z.string(),
+  third_id: z.string(),
+  created_user: z.string(),
+  created_date: z.date(),
+  updated_user: z.string(),
+  updated_date: z.date(),
+});
+
+export type RelevanceDto = z.infer<typeof relevanceDto>;
+
+const baseRelevanceDto = z.object({
   type: z.string(),
   first_id: z.string().optional(),
   second_id: z.string().optional(),
   third_id: z.string().optional(),
 });
 
-const relevancesDto = z.object({
+const baseRelevancesDto = z.object({
   type: z.string(),
   first_ids: z.array(z.string()).optional(),
   second_ids: z.array(z.string()).optional(),
@@ -39,15 +53,15 @@ const unassignIssue = {
   path: ["first_id or second_id or third_id"],
 };
 
-export const createRelevanceDto = relevanceDto;
+export const createRelevanceDto = baseRelevanceDto;
 
 export type CreateRelevanceDto = z.infer<typeof createRelevanceDto>;
 
-export const updateRelevanceDto = relevanceDto;
+export const updateRelevanceDto = baseRelevanceDto;
 
 export type UpdateRelevanceDto = z.infer<typeof updateRelevanceDto>;
 
-export const assignRelevanceDto = relevancesDto.superRefine(
+export const assignRelevanceDto = baseRelevancesDto.superRefine(
   (
     { first_ids: firstIds, second_ids: secondIds, third_ids: thirdIds },
     refinementContext,
@@ -62,7 +76,7 @@ export const assignRelevanceDto = relevancesDto.superRefine(
 
 export type AssignRelevanceDto = z.infer<typeof unassignRelevanceDto>;
 
-export const unassignRelevanceDto = relevancesDto.superRefine(
+export const unassignRelevanceDto = baseRelevancesDto.superRefine(
   (
     { first_ids: firstIds, second_ids: secondIds, third_ids: thirdIds },
     refinementContext,
@@ -79,8 +93,8 @@ export type UnassignRelevanceDto = z.infer<typeof unassignRelevanceDto>;
 
 export const reassignRelevanceDto = z
   .object({
-    unassign: relevancesDto,
-    assign: relevancesDto,
+    unassign: baseRelevancesDto,
+    assign: baseRelevancesDto,
   })
   .superRefine(({ unassign, assign }, refinementContext) => {
     const assignCount = countUndefinedOrEmpty([
@@ -105,3 +119,16 @@ export const reassignRelevanceDto = z
   });
 
 export type ReassignRelevanceDto = z.infer<typeof reassignRelevanceDto>;
+
+export const findManyRelevanceArgsDto = baseRelevancesDto;
+
+export type FindManyRelevanceArgsDto = z.infer<typeof findManyRelevanceArgsDto>;
+
+const reassignRelevanceReturnDto = z.object({
+  assignRelevances: z.array(relevanceDto).optional(),
+  unassignCount: z.number(),
+});
+
+export type ReassignRelevanceReturnDto = z.infer<
+  typeof reassignRelevanceReturnDto
+>;

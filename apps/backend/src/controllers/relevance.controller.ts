@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
 import type { Relevance } from "@/interfaces/relevance.interface";
-import type { ReassignRelevanceReturn } from "@/services/relevance.service";
 import { RelevanceService } from "@/services/relevance.service";
 import type {
   AssignRelevanceDto,
@@ -9,6 +8,8 @@ import type {
   ReassignRelevanceDto,
   CreateRelevanceDto,
   UpdateRelevanceDto,
+  FindManyRelevanceArgsDto,
+  ReassignRelevanceReturnDto,
 } from "@/dtos/relevance.dto";
 import { HttpException } from "@/exceptions/httpException";
 
@@ -16,15 +17,19 @@ export class RelevanceController {
   public relevance = Container.get(RelevanceService);
 
   public getRelevances = async (
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const findAllRelevancesData: Relevance[] =
-        await this.relevance.findAllRelevance();
+      const args = req.params as unknown as FindManyRelevanceArgsDto;
 
-      res.status(200).json({ data: findAllRelevancesData, message: "findAll" });
+      const findManyRelevancesData: Relevance[] =
+        await this.relevance.findManyRelevance(args);
+
+      res
+        .status(200)
+        .json({ data: findManyRelevancesData, message: "findMany" });
     } catch (error) {
       next(error);
     }
@@ -150,7 +155,7 @@ export class RelevanceController {
   ): Promise<void> => {
     try {
       const relevanceData = req.body as ReassignRelevanceDto;
-      const reassignRelevanceData: ReassignRelevanceReturn =
+      const reassignRelevanceData: ReassignRelevanceReturnDto =
         await this.relevance.reassignRelevance(relevanceData);
 
       res

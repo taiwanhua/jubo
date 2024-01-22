@@ -11,7 +11,7 @@ afterAll(async () => {
 
 describe("Testing Users", () => {
   describe("[GET] /users", () => {
-    it("response findAll users", async () => {
+    it("response findMany users", async () => {
       const usersRoute = new UserRoute();
       const users = usersRoute.usersController.userService.users;
 

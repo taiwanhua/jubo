@@ -2,7 +2,11 @@ import type { NextFunction, Request, Response } from "express";
 import { Container } from "typedi";
 import type { Order } from "@/interfaces/order.interface";
 import { OrderService } from "@/services/order.service";
-import type { CreateOrderDto, UpdateOrderDto } from "@/dtos/order.dto";
+import type {
+  CreateOrderDto,
+  CreatePatientOrderDto,
+  UpdateOrderDto,
+} from "@/dtos/order.dto";
 import { HttpException } from "@/exceptions/httpException";
 
 export class OrderController {
@@ -14,9 +18,9 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const findAllOrdersData: Order[] = await this.order.findAllOrder();
+      const findManyOrdersData: Order[] = await this.order.findManyOrder();
 
-      res.status(200).json({ data: findAllOrdersData, message: "findAll" });
+      res.status(200).json({ data: findManyOrdersData, message: "findMany" });
     } catch (error) {
       next(error);
     }
@@ -96,6 +100,25 @@ export class OrderController {
       const deleteOrderData: Order = await this.order.deleteOrder(orderId);
 
       res.status(200).json({ data: deleteOrderData, message: "deleted" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public createPatientOrder = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const orderData = req.body as CreatePatientOrderDto;
+      const createPatientOrderData: Order = await this.order.createPatientOrder(
+        orderData,
+      );
+
+      res
+        .status(201)
+        .json({ data: createPatientOrderData, message: "created" });
     } catch (error) {
       next(error);
     }

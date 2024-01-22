@@ -4,9 +4,14 @@ import type { Patient } from "@/interfaces/patient.interface";
 import { PatientService } from "@/services/patient.service";
 import type { CreatePatientDto, UpdatePatientDto } from "@/dtos/patient.dto";
 import { HttpException } from "@/exceptions/httpException";
+import { RelevanceService } from "@/services/relevance.service";
+import { OrderService } from "@/services/order.service";
+import type { Order } from "@/interfaces/order.interface";
 
 export class PatientController {
   public patient = Container.get(PatientService);
+  public relevance = Container.get(RelevanceService);
+  public order = Container.get(OrderService);
 
   public getPatients = async (
     _req: Request,
@@ -14,10 +19,46 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const findAllPatientsData: Patient[] =
-        await this.patient.findAllPatient();
+      const findManyPatientsData: Patient[] =
+        await this.patient.findManyPatient();
 
-      res.status(200).json({ data: findAllPatientsData, message: "findAll" });
+      const findManyPatientIds = findManyPatientsData.map(({ id }) => id);
+
+      const findPatientOrderRelevances = await this.relevance.findManyRelevance(
+        {
+          type: "PatientOrder",
+          first_ids: findManyPatientIds,
+        },
+      );
+
+      const findPatientOrderRelevanceIds = findPatientOrderRelevances.map(
+        ({ second_id: secondId }) => secondId,
+      );
+
+      const findManyOrderData = await this.order.findManyOrder({
+        ids: findPatientOrderRelevanceIds,
+      });
+
+      findManyPatientsData.map((patient) => {
+        const orders = findPatientOrderRelevances.reduce<Order[]>(
+          (acc, cur) => {
+            if (cur.first_id === patient.id) {
+              acc.push(
+                findManyOrderData.find(({ id }) => id === cur.second_id)!,
+              );
+            }
+            return acc;
+          },
+          [],
+        );
+
+        return {
+          ...patient,
+          orders,
+        };
+      });
+
+      res.status(200).json({ data: findManyPatientsData, message: "findMany" });
     } catch (error) {
       next(error);
     }

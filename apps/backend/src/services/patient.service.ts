@@ -6,10 +6,9 @@ import prisma from "@/prisma/client";
 
 @Service()
 export class PatientService {
-  // public patient = new PrismaClient().patient;
   public patient = prisma.patient;
 
-  public async findAllPatient(): Promise<Patient[]> {
+  public async findManyPatient(): Promise<Patient[]> {
     const allPatient = await this.patient.findMany();
     return allPatient;
   }

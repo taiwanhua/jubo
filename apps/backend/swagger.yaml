@@ -12,7 +12,7 @@ paths:
     get:
       tags:
         - patients
-      summary: Find All Patients
+      summary: Find Many Patients
       responses:
         200:
           description: "OK"
@@ -116,7 +116,7 @@ paths:
     get:
       tags:
         - orders
-      summary: Find All Orders
+      summary: Find Many Orders
       responses:
         200:
           description: "OK"

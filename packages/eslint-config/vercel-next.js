@@ -69,7 +69,7 @@ module.exports = {
     //       pascalCase: true,
     //       snakeCase: true,
     //     },
-    //     ignore: ["useSX.ts", "useIsUATStore.ts"],
+    //     ignore: ["useSx.ts", "useIsUATStore.ts"],
     //   },
     // ],
     // "react/function-component-definition": "off",
