@@ -25,7 +25,6 @@ export class App {
     this.port = PORT || 3000;
 
     this.initializeMiddlewares();
-    console.log("s");
     this.initializeRoutes(routes);
     this.initializeSwagger();
     this.initializeErrorHandling();

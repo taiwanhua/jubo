@@ -6,12 +6,19 @@ import { PrismaClient } from "@prisma/client";
 // Learn more:
 // https://pris.ly/d/help/next-js-best-practices
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const prismaClientSingleton = (): PrismaClient => {
+  return new PrismaClient();
+};
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+declare global {
+  // eslint-disable-next-line no-var -- d
+  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
+}
 
-// eslint-disable-next-line turbo/no-undeclared-env-vars
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+const prisma = globalThis.prisma ?? prismaClientSingleton();
 
 export default prisma;
+
+if (process.env.NODE_ENV !== "production") {
+  globalThis.prisma = prisma;
+}

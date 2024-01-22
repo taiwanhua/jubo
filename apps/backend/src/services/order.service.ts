@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import type { CreateOrderDto, UpdateOrderDto } from "@/dtos/order.dto";
 import { HttpException } from "@/exceptions/httpException";
 import type { Order } from "@/interfaces/order.interface";
-import { prisma } from "@/prisma/client";
+import prisma from "@/prisma/client";
 
 @Service()
 export class OrderService {

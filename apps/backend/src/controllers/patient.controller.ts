@@ -3,6 +3,7 @@ import { Container } from "typedi";
 import type { Patient } from "@/interfaces/patient.interface";
 import { PatientService } from "@/services/patient.service";
 import type { CreatePatientDto, UpdatePatientDto } from "@/dtos/patient.dto";
+import { HttpException } from "@/exceptions/httpException";
 
 export class PatientController {
   public patient = Container.get(PatientService);
@@ -28,7 +29,12 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = req.params.id!;
+      const patientId = req.params.id;
+
+      if (!patientId) {
+        throw new HttpException(400, "Id is required");
+      }
+
       const findOnePatientData: Patient = await this.patient.findPatientById(
         patientId,
       );
@@ -45,7 +51,7 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientData: CreatePatientDto = req.body;
+      const patientData = req.body as CreatePatientDto;
       const createPatientData: Patient = await this.patient.createPatient(
         patientData,
       );
@@ -62,8 +68,13 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = req.params.id!;
-      const patientData: UpdatePatientDto = req.body;
+      const patientId = req.params.id;
+
+      if (!patientId) {
+        throw new HttpException(400, "Id is required");
+      }
+
+      const patientData = req.body as UpdatePatientDto;
       const updatePatientData: Patient = await this.patient.updatePatient(
         patientId,
         patientData,
@@ -81,7 +92,12 @@ export class PatientController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const patientId = req.params.id!;
+      const patientId = req.params.id;
+
+      if (!patientId) {
+        throw new HttpException(400, "Id is required");
+      }
+
       const deletePatientData: Patient = await this.patient.deletePatient(
         patientId,
       );

@@ -1,4 +1,4 @@
-export interface Reference {
+export interface Relevance {
   id: string;
   type: string;
   first_id: string;

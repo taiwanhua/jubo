@@ -34,10 +34,9 @@
   "include": [
     "**/*.ts",
     "**/*.json",
-    ".env",
     "jest.config.js",
-    "src/controllers/.controller.ts",
-    "src/routes/.route.ts"
+    ".eslintrc.js",
+    "node_modules/.prisma"
   ],
   "exclude": ["node_modules", "src/logs"]
 }

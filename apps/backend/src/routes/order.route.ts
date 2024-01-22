@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { OrderController } from "@/controllers/order.controller";
 import { createOrderDto, updateOrderDto } from "@/dtos/order.dto";
-import { Routes } from "@/interfaces/routes.interface";
+import type { Routes } from "@/interfaces/routes.interface";
 import { validationRequestBodyMiddleware } from "@/middlewares/validation.middleware";
+import { asyncWrapper } from "@/utils/asyncWrapper";
 
 export class OrderRoute implements Routes {
   public path = "/orders";
@@ -13,19 +14,22 @@ export class OrderRoute implements Routes {
     this.initializeRoutes();
   }
 
-  private initializeRoutes() {
-    this.router.get(`${this.path}`, this.order.getOrders);
-    this.router.get(`${this.path}/:id`, this.order.getOrderById);
+  private initializeRoutes(): void {
+    this.router.get(this.path, asyncWrapper(this.order.getOrders));
+    this.router.get(`${this.path}/:id`, asyncWrapper(this.order.getOrderById));
     this.router.post(
-      `${this.path}`,
+      this.path,
       validationRequestBodyMiddleware(createOrderDto),
-      this.order.createOrder,
+      asyncWrapper(this.order.createOrder),
     );
     this.router.put(
       `${this.path}/:id`,
       validationRequestBodyMiddleware(updateOrderDto),
-      this.order.updateOrder,
+      asyncWrapper(this.order.updateOrder),
     );
-    this.router.delete(`${this.path}/:id`, this.order.deleteOrder);
+    this.router.delete(
+      `${this.path}/:id`,
+      asyncWrapper(this.order.deleteOrder),
+    );
   }
 }

@@ -3,8 +3,8 @@ tags:
     description: patients API
   - name: orders
     description: orders API
-  - name: references
-    description: references API
+  - name: relevances
+    description: relevances API
 
 paths:
   # [GET] patients
@@ -56,6 +56,8 @@ paths:
       responses:
         200:
           description: "OK"
+        400:
+          description: "Bad Request"
         409:
           description: "Conflict"
         500:
@@ -102,6 +104,8 @@ paths:
       responses:
         200:
           description: "OK"
+        400:
+          description: "Bad Request"
         409:
           description: "Conflict"
         500:
@@ -156,6 +160,8 @@ paths:
       responses:
         200:
           description: "OK"
+        400:
+          description: "Bad Request"
         409:
           description: "Conflict"
         500:
@@ -202,6 +208,8 @@ paths:
       responses:
         200:
           description: "OK"
+        400:
+          description: "Bad Request"
         409:
           description: "Conflict"
         500:

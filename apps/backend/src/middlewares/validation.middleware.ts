@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
+import type { ZodTypeAny } from "zod";
 import { HttpException } from "@/exceptions/httpException";
-import { ZodTypeAny } from "zod";
 
 /**
  * validationMiddleware
@@ -16,14 +16,15 @@ export const validationRequestBodyMiddleware = <
     const validation = type.safeParse(req.body);
 
     if (validation.success) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- just put data to body
       req.body = validation.data;
       next();
     } else {
-      const message = validation.error.issues
+      const errorMessage = validation.error.issues
         .map(({ path, message }) => `${path.join(".")} : ${message}`)
         .join(", ");
 
-      next(new HttpException(400, message));
+      next(new HttpException(400, errorMessage));
     }
   };
 };

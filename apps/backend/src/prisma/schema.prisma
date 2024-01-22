@@ -25,7 +25,7 @@ model order {
   updated_date DateTime @default(now()) @db.Timestamptz(3)
 }
 
-model reference {
+model relevance {
   id           String   @id @default(uuid())
   type         String   @db.VarChar(45)
   first_id     String   @db.VarChar(255)

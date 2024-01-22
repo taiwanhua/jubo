@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { PatientController } from "@/controllers/patient.controller";
 import { createPatientDto, updatePatientDto } from "@/dtos/patient.dto";
-import { Routes } from "@/interfaces/routes.interface";
+import type { Routes } from "@/interfaces/routes.interface";
 import { validationRequestBodyMiddleware } from "@/middlewares/validation.middleware";
+import { asyncWrapper } from "@/utils/asyncWrapper";
 
 export class PatientRoute implements Routes {
   public path = "/patients";
@@ -13,19 +14,25 @@ export class PatientRoute implements Routes {
     this.initializeRoutes();
   }
 
-  private initializeRoutes() {
-    this.router.get(`${this.path}`, this.patient.getPatients);
-    this.router.get(`${this.path}/:id`, this.patient.getPatientById);
+  private initializeRoutes(): void {
+    this.router.get(this.path, asyncWrapper(this.patient.getPatients));
+    this.router.get(
+      `${this.path}/:id`,
+      asyncWrapper(this.patient.getPatientById),
+    );
     this.router.post(
-      `${this.path}`,
+      this.path,
       validationRequestBodyMiddleware(createPatientDto),
-      this.patient.createPatient,
+      asyncWrapper(this.patient.createPatient),
     );
     this.router.put(
       `${this.path}/:id`,
       validationRequestBodyMiddleware(updatePatientDto),
-      this.patient.updatePatient,
+      asyncWrapper(this.patient.updatePatient),
     );
-    this.router.delete(`${this.path}/:id`, this.patient.deletePatient);
+    this.router.delete(
+      `${this.path}/:id`,
+      asyncWrapper(this.patient.deletePatient),
+    );
   }
 }

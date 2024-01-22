@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import type { CreatePatientDto, UpdatePatientDto } from "@/dtos/patient.dto";
 import { HttpException } from "@/exceptions/httpException";
 import type { Patient } from "@/interfaces/patient.interface";
-import { prisma } from "@/prisma/client";
+import prisma from "@/prisma/client";
 
 @Service()
 export class PatientService {

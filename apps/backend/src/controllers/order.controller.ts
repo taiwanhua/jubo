@@ -3,6 +3,7 @@ import { Container } from "typedi";
 import type { Order } from "@/interfaces/order.interface";
 import { OrderService } from "@/services/order.service";
 import type { CreateOrderDto, UpdateOrderDto } from "@/dtos/order.dto";
+import { HttpException } from "@/exceptions/httpException";
 
 export class OrderController {
   public order = Container.get(OrderService);
@@ -27,7 +28,12 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = req.params.id!;
+      const orderId = req.params.id;
+
+      if (!orderId) {
+        throw new HttpException(400, "Id is required");
+      }
+
       const findOneOrderData: Order = await this.order.findOrderById(orderId);
 
       res.status(200).json({ data: findOneOrderData, message: "findOne" });
@@ -42,7 +48,7 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderData: CreateOrderDto = req.body;
+      const orderData = req.body as CreateOrderDto;
       const createOrderData: Order = await this.order.createOrder(orderData);
 
       res.status(201).json({ data: createOrderData, message: "created" });
@@ -57,8 +63,13 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = req.params.id!;
-      const orderData: UpdateOrderDto = req.body;
+      const orderId = req.params.id;
+
+      if (!orderId) {
+        throw new HttpException(400, "Id is required");
+      }
+
+      const orderData = req.body as UpdateOrderDto;
       const updateOrderData: Order = await this.order.updateOrder(
         orderId,
         orderData,
@@ -76,7 +87,12 @@ export class OrderController {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const orderId = req.params.id!;
+      const orderId = req.params.id;
+
+      if (!orderId) {
+        throw new HttpException(400, "Id is required");
+      }
+
       const deleteOrderData: Order = await this.order.deleteOrder(orderId);
 
       res.status(200).json({ data: deleteOrderData, message: "deleted" });
