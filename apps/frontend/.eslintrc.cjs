@@ -13,6 +13,14 @@ module.exports = {
       { allowConstantExport: true },
     ],
     "react/function-component-definition": "off",
+    "@typescript-eslint/no-misused-promises": [
+      2,
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
+    ],
   },
   ignorePatterns: ["scripts/*"],
 };

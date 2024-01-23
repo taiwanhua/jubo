@@ -32,6 +32,7 @@ export class RelevanceService {
                 third_id: { in: args.third_ids },
               },
             },
+            orderBy: { created_date: "desc" },
           }
         : undefined,
     );
