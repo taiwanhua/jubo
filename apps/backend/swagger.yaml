@@ -1,3 +1,8 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server"
+  version: "1.0.0"
+  title: "Swagger Example 2.0"
 tags:
   - name: patients
     description: patients API
@@ -5,7 +10,9 @@ tags:
     description: orders API
   - name: relevances
     description: relevances API
-
+schemes:
+  - "https"
+  - "http"
 paths:
   # [GET] patients
   /patients:
@@ -16,6 +23,10 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PatientWithOrders"
         500:
           description: "Server Error"
 
@@ -27,13 +38,13 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Patient Data
+          description: Patient Body
           required: true
-          schema:
-            $ref: "#/definitions/patientData"
       responses:
         201:
           description: "Created"
+          schema:
+            $ref: "#/definitions/Patient"
         400:
           description: "Bad Request"
         409:
@@ -56,6 +67,8 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Patient"
         400:
           description: "Bad Request"
         409:
@@ -76,13 +89,15 @@ paths:
           type: string
         - name: body
           in: body
-          description: Patient Data
+          description: Patient Body
           required: true
           schema:
-            $ref: "#/definitions/patientData"
+            $ref: "#/definitions/PatientBody"
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Patient"
         400:
           description: "Bad Request"
         409:
@@ -104,6 +119,8 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Patient"
         400:
           description: "Bad Request"
         409:
@@ -120,6 +137,10 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
         500:
           description: "Server Error"
 
@@ -131,13 +152,38 @@ paths:
       parameters:
         - name: body
           in: body
-          description: Order Data
+          description: Order Body
           required: true
           schema:
-            $ref: "#/definitions/orderData"
+            $ref: "#/definitions/OrderBody"
       responses:
         201:
           description: "Created"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [POST] orders/withPatient
+  /orders/withPatient:
+    post:
+      tags:
+        - orders
+      summary: Add Order With Patient
+      parameters:
+        - name: body
+          in: body
+          description: Order Body
+          required: true
+          schema:
+            $ref: "#/definitions/PatientOrderBody"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Order"
         400:
           description: "Bad Request"
         409:
@@ -160,6 +206,8 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Order"
         400:
           description: "Bad Request"
         409:
@@ -180,13 +228,15 @@ paths:
           type: string
         - name: body
           in: body
-          description: Order Data
+          description: Order Body
           required: true
           schema:
-            $ref: "#/definitions/orderData"
+            $ref: "#/definitions/OrderBody"
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Order"
         400:
           description: "Bad Request"
         409:
@@ -208,6 +258,83 @@ paths:
       responses:
         200:
           description: "OK"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [PUT] relevances/assign
+  /relevances/assign:
+    put:
+      tags:
+        - relevances
+      summary: Assign Relevances
+      parameters:
+        - name: body
+          in: body
+          description: Assign Relevance Body
+          required: true
+          schema:
+            $ref: "#/definitions/AssignRelevanceBody"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/AssignRelevance"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [PUT] relevances/unassign
+  /relevances/unassign:
+    put:
+      tags:
+        - relevances
+      summary: Unassign Relevances
+      parameters:
+        - name: body
+          in: body
+          description: Unassign Relevance Body
+          required: true
+          schema:
+            $ref: "#/definitions/UnassignRelevanceBody"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/UnassignRelevance"
+        400:
+          description: "Bad Request"
+        409:
+          description: "Conflict"
+        500:
+          description: "Server Error"
+
+  # [PUT] relevances/reassign
+  /relevances/reassign:
+    put:
+      tags:
+        - relevances
+      summary: Reassign Relevances
+      parameters:
+        - name: body
+          in: body
+          description: Reassign Relevance Body
+          required: true
+          schema:
+            $ref: "#/definitions/ReassignRelevanceBody"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ReassignRelevance"
         400:
           description: "Bad Request"
         409:
@@ -217,7 +344,108 @@ paths:
 
 # definitions
 definitions:
-  patientData:
+  Patient:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+        format: "varchar(45)"
+      created_user:
+        type: "string"
+        format: "varchar(45)"
+      created_date:
+        type: "string"
+        format: "date-time"
+      updated_user:
+        type: "string"
+        format: "varchar(45)"
+      updated_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Patient"
+  PatientWithOrders:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+        format: "varchar(45)"
+      created_user:
+        type: "string"
+        format: "varchar(45)"
+      created_date:
+        type: "string"
+        format: "date-time"
+      updated_user:
+        type: "string"
+        format: "varchar(45)"
+      updated_date:
+        type: "string"
+        format: "date-time"
+      orders:
+        type: "array"
+        items:
+          $ref: "#/definitions/Order"
+    xml:
+      name: "PatientWithOrders"
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      message:
+        type: "string"
+        format: "varchar(255)"
+      created_user:
+        type: "string"
+        format: "varchar(45)"
+      created_date:
+        type: "string"
+        format: "date-time"
+      updated_user:
+        type: "string"
+        format: "varchar(45)"
+      updated_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Patient"
+  Relevance:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      type:
+        type: "string"
+        format: "varchar(45)"
+      first_id:
+        type: "string"
+        format: "varchar(255)"
+      second_id:
+        type: "string"
+        format: "varchar(255)"
+      third_id:
+        type: "string"
+        format: "varchar(255)"
+      created_user:
+        type: "string"
+        format: "varchar(45)"
+      created_date:
+        type: "string"
+        format: "date-time"
+      updated_user:
+        type: "string"
+        format: "varchar(45)"
+      updated_date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Relevance"
+  PatientBody:
     type: object
     required:
       - name
@@ -225,7 +453,7 @@ definitions:
       name:
         type: string
         description: Patient Name
-  orderData:
+  OrderBody:
     type: object
     required:
       - message
@@ -233,7 +461,115 @@ definitions:
       message:
         type: string
         description: Order Message
-
-schemes:
-  - https
-  - http
+  PatientOrderBody:
+    type: object
+    required:
+      - patientId
+      - message
+    properties:
+      message:
+        type: string
+        description: Order Message
+      patientId:
+        type: string
+        description: Specify which patient have the order
+  AssignRelevanceBody:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        type: string
+        description: Relevance Type
+      first_ids:
+        type: array
+        items:
+          type: "string"
+        description: First Ids of Relevance
+      second_ids:
+        type: array
+        items:
+          type: "string"
+        description: Second Ids of Relevance
+      third_ids:
+        type: array
+        items:
+          type: "string"
+        description: Third Ids of Relevance
+  UnassignRelevanceBody:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        type: string
+        description: Relevance Type
+      first_ids:
+        type: array
+        items:
+          type: "string"
+        description: First Ids of Relevance
+      second_ids:
+        type: array
+        items:
+          type: "string"
+        description: Second Ids of Relevance
+      third_ids:
+        type: array
+        items:
+          type: "string"
+        description: Third Ids of Relevance
+  ReassignRelevanceBody:
+    type: object
+    required:
+      - assign
+      - reassign
+    properties:
+      assign:
+        type: object
+        required:
+          - type
+        properties:
+          type:
+            type: string
+            description: Relevance Type
+          first_ids:
+            type: array
+            items:
+              type: "string"
+            description: First Ids of Relevance
+          second_ids:
+            type: array
+            items:
+              type: "string"
+            description: Second Ids of Relevance
+          third_ids:
+            type: array
+            items:
+              type: "string"
+            description: Third Ids of Relevance
+        description: Assign Body
+      reassign:
+        type: object
+        required:
+          - type
+        properties:
+          type:
+            type: string
+            description: Relevance Type
+          first_ids:
+            type: array
+            items:
+              type: "string"
+            description: First Ids of Relevance
+          second_ids:
+            type: array
+            items:
+              type: "string"
+            description: Second Ids of Relevance
+          third_ids:
+            type: array
+            items:
+              type: "string"
+            description: Third Ids of Relevance
+        description: Reassign Body

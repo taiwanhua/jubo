@@ -1,4 +1,3 @@
-/* eslint-disable tsdoc/syntax -- @openapi*/
 import { Router } from "express";
 import { PatientController } from "@/controllers/patient.controller";
 import { createPatientDto, updatePatientDto } from "@/dtos/patient.dto";

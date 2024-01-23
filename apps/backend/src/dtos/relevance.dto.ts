@@ -74,7 +74,7 @@ export const assignRelevanceDto = baseRelevancesDto.superRefine(
   },
 );
 
-export type AssignRelevanceDto = z.infer<typeof unassignRelevanceDto>;
+export type AssignRelevanceDto = z.infer<typeof assignRelevanceDto>;
 
 export const unassignRelevanceDto = baseRelevancesDto.superRefine(
   (

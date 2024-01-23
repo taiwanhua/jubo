@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { OrderController } from "@/controllers/order.controller";
-import { createOrderDto, updateOrderDto } from "@/dtos/order.dto";
+import {
+  createOrderDto,
+  createPatientOrderDto,
+  updateOrderDto,
+} from "@/dtos/order.dto";
 import type { Routes } from "@/interfaces/routes.interface";
 import { validationRequestBodyMiddleware } from "@/middlewares/validation.middleware";
 import { asyncWrapper } from "@/utils/asyncWrapper";
@@ -21,6 +25,11 @@ export class OrderRoute implements Routes {
       this.path,
       validationRequestBodyMiddleware(createOrderDto),
       asyncWrapper(this.order.createOrder),
+    );
+    this.router.post(
+      `${this.path}/withPatient`,
+      validationRequestBodyMiddleware(createPatientOrderDto),
+      asyncWrapper(this.order.createPatientOrder),
     );
     this.router.put(
       `${this.path}/:id`,

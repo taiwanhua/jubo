@@ -39,26 +39,30 @@ export class PatientController {
         ids: findPatientOrderRelevanceIds,
       });
 
-      findManyPatientsData.map((patient) => {
-        const orders = findPatientOrderRelevances.reduce<Order[]>(
-          (acc, cur) => {
-            if (cur.first_id === patient.id) {
-              acc.push(
-                findManyOrderData.find(({ id }) => id === cur.second_id)!,
-              );
-            }
-            return acc;
-          },
-          [],
-        );
+      const findManyPatientsWithOrdersData = findManyPatientsData.map(
+        (patient) => {
+          const orders = findPatientOrderRelevances.reduce<Order[]>(
+            (acc, cur) => {
+              if (cur.first_id === patient.id) {
+                acc.push(
+                  findManyOrderData.find(({ id }) => id === cur.second_id)!,
+                );
+              }
+              return acc;
+            },
+            [],
+          );
 
-        return {
-          ...patient,
-          orders,
-        };
-      });
+          return {
+            ...patient,
+            orders,
+          };
+        },
+      );
 
-      res.status(200).json({ data: findManyPatientsData, message: "findMany" });
+      res
+        .status(200)
+        .json({ data: findManyPatientsWithOrdersData, message: "findMany" });
     } catch (error) {
       next(error);
     }
