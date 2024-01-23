@@ -40,6 +40,8 @@ paths:
           in: body
           description: Patient Body
           required: true
+          schema:
+            $ref: "#/definitions/PatientBody"
       responses:
         201:
           description: "Created"
@@ -284,7 +286,9 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/AssignRelevance"
+            type: array
+            items:
+              $ref: "#/definitions/Relevance"
         400:
           description: "Bad Request"
         409:
@@ -309,7 +313,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/UnassignRelevance"
+            type: number
         400:
           description: "Bad Request"
         409:
@@ -334,7 +338,14 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/ReassignRelevance"
+            type: object
+            properties:
+              assign:
+                type: array
+                items:
+                  $ref: "#/definitions/Relevance"
+              unassign:
+                type: "number"
         400:
           description: "Bad Request"
         409:
