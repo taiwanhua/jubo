@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars -- need @mui/material/styles  */
+/* eslint-disable @typescript-eslint/no-unused-vars -- need @mui/material/styles */
 import type {
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   Theme as MuiTheme,
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   ThemeOptions as MuiThemeOptions,
 } from "@mui/material/styles";
 

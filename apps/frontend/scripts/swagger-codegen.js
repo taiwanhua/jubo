@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import yaml from "js-yaml";
 import AdmZip from "adm-zip";
-import { rimrafSync } from "rimraf";
+import { rimraf } from "rimraf";
 // import fetch from "node-fetch";
 import { mkdir } from "node:fs/promises";
 import { Readable } from "node:stream";
@@ -12,11 +12,15 @@ import { finished } from "node:stream/promises";
 // ===============================================
 //      TO GEN API FROM SWAGGER YAML (Node 18 +)
 // ===============================================
-// 這份腳本只先產出zip檔案，後續暫須手動處理
+// 對於產出之 api 需再進行加工
 
 const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);
-const appsPath = __filename.split("frontend/scripts/swagger-codegen.js")[0];
+const appsPath = __filename
+  .replaceAll("\\", "/")
+  .split("frontend/scripts/swagger-codegen.js")[0];
+
+console.log(appsPath);
 const yamlPath = `${appsPath}backend/swagger.yaml`;
 
 const unzipDirectory = async (inputFilePath, outputDirectory) => {
@@ -80,16 +84,19 @@ const swaggerCodegen = async () => {
       await mkdir(swaggerFolderPath);
     }
 
-    fs.createReadStream(`${swaggerFolderPath}/`).pipe(
-      fs.createWriteStream("newLog.log"),
-    );
-    fs.createReadStream("test.log").pipe(fs.createWriteStream("newLog.log"));
-    fs.createReadStream("test.log").pipe(fs.createWriteStream("newLog.log"));
+    ["api.ts", "configuration.ts", "custom.d.ts"].forEach((fileName) => {
+      fs.createReadStream(
+        `${swaggerTempFolderPath}/typescript-fetch-client/${fileName}`,
+      ).pipe(fs.createWriteStream(`${swaggerFolderPath}/${fileName}`));
+    });
 
     // remove temp folder
     rimraf(swaggerTempFolderPath);
   } catch (e) {
     console.log(e);
+    console.log(
+      "Please check the Node version is >= 18, or update to newest version",
+    );
   }
 };
 
