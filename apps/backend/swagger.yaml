@@ -26,7 +26,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/PatientWithOrders"
+              $ref: "#/definitions/PatientWithOrdersResponse"
         500:
           description: "Server Error"
 
@@ -46,7 +46,7 @@ paths:
         201:
           description: "Created"
           schema:
-            $ref: "#/definitions/Patient"
+            $ref: "#/definitions/PatientResponse"
         400:
           description: "Bad Request"
         409:
@@ -70,7 +70,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Patient"
+            $ref: "#/definitions/PatientResponse"
         400:
           description: "Bad Request"
         409:
@@ -99,7 +99,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Patient"
+            $ref: "#/definitions/PatientResponse"
         400:
           description: "Bad Request"
         409:
@@ -122,7 +122,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Patient"
+            $ref: "#/definitions/PatientResponse"
         400:
           description: "Bad Request"
         409:
@@ -142,7 +142,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Order"
+              $ref: "#/definitions/OrdersResponse"
         500:
           description: "Server Error"
 
@@ -161,6 +161,8 @@ paths:
       responses:
         201:
           description: "Created"
+          schema:
+            $ref: "#/definitions/OrderResponse"
         400:
           description: "Bad Request"
         409:
@@ -185,7 +187,7 @@ paths:
         201:
           description: "Created"
           schema:
-            $ref: "#/definitions/Order"
+            $ref: "#/definitions/OrderResponse"
         400:
           description: "Bad Request"
         409:
@@ -209,7 +211,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Order"
+            $ref: "#/definitions/OrderResponse"
         400:
           description: "Bad Request"
         409:
@@ -238,7 +240,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Order"
+            $ref: "#/definitions/OrderResponse"
         400:
           description: "Bad Request"
         409:
@@ -261,7 +263,7 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/Order"
+            $ref: "#/definitions/OrderResponse"
         400:
           description: "Bad Request"
         409:
@@ -288,7 +290,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Relevance"
+              $ref: "#/definitions/AssignRelevancesResponse"
         400:
           description: "Bad Request"
         409:
@@ -313,7 +315,7 @@ paths:
         200:
           description: "OK"
           schema:
-            type: number
+            $ref: "#/definitions/UnassignRelevancesResponse"
         400:
           description: "Bad Request"
         409:
@@ -338,14 +340,7 @@ paths:
         200:
           description: "OK"
           schema:
-            type: object
-            properties:
-              assign:
-                type: array
-                items:
-                  $ref: "#/definitions/Relevance"
-              unassign:
-                type: "number"
+            $ref: "#/definitions/ReassignRelevancesResponse"
         400:
           description: "Bad Request"
         409:
@@ -357,6 +352,13 @@ paths:
 definitions:
   Patient:
     type: "object"
+    required:
+      - id
+      - name
+      - created_user
+      - created_date
+      - updated_user
+      - updated_date
     properties:
       id:
         type: "string"
@@ -379,6 +381,14 @@ definitions:
       name: "Patient"
   PatientWithOrders:
     type: "object"
+    required:
+      - id
+      - name
+      - created_user
+      - created_date
+      - updated_user
+      - updated_date
+      - orders
     properties:
       id:
         type: "string"
@@ -405,6 +415,13 @@ definitions:
       name: "PatientWithOrders"
   Order:
     type: "object"
+    required:
+      - id
+      - message
+      - created_user
+      - created_date
+      - updated_user
+      - updated_date
     properties:
       id:
         type: "string"
@@ -427,6 +444,16 @@ definitions:
       name: "Patient"
   Relevance:
     type: "object"
+    required:
+      - id
+      - type
+      - first_id
+      - second_id
+      - third_id
+      - created_user
+      - created_date
+      - updated_user
+      - updated_date
     properties:
       id:
         type: "string"
@@ -584,3 +611,100 @@ definitions:
               type: "string"
             description: Third Ids of Relevance
         description: Reassign Body
+  PatientResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        $ref: "#/definitions/Patient"
+      message:
+        type: "string"
+    xml:
+      name: "PatientResponse"
+  PatientWithOrdersResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/PatientWithOrders"
+      message:
+        type: "string"
+    xml:
+      name: "PatientWithOrdersResponse"
+  OrderResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        $ref: "#/definitions/Order"
+      message:
+        type: "string"
+    xml:
+      name: "OrderResponse"
+  OrdersResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/Order"
+      message:
+        type: "string"
+    xml:
+      name: "OrdersResponse"
+  AssignRelevancesResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/Relevance"
+      message:
+        type: "string"
+    xml:
+      name: "AssignRelevancesResponse"
+  UnassignRelevancesResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        type: "number"
+      message:
+        type: "string"
+    xml:
+      name: "UnassignRelevancesResponse"
+  ReassignRelevancesResponse:
+    type: "object"
+    required:
+      - data
+      - message
+    properties:
+      data:
+        type: object
+        properties:
+          assign:
+            type: array
+            items:
+              $ref: "#/definitions/Relevance"
+          unassign:
+            type: "number"
+      message:
+        type: "string"
+    xml:
+      name: "ReassignRelevancesResponse"

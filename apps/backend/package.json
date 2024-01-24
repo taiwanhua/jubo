@@ -14,15 +14,13 @@
     "prisma:pull": "dotenv -e .env.development.local -- npx prisma db pull",
     "prisma:push": "dotenv -e .env.development.local -- npx prisma db push",
     "prisma:generate": "dotenv -e .env.development.local prisma generate",
-    "deploy:prod": "npm run build && pm2 start ecosystem.config.js --only prod",
-    "deploy:dev": "pm2 start ecosystem.config.js --only dev"
+    "prisma:seed": "dotenv -e .env.development.local -- ts-node src/prisma/seed.ts"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
-    "bcrypt": "^5.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -32,7 +30,6 @@
     "express": "^4.18.1",
     "helmet": "^5.1.1",
     "hpp": "^0.2.3",
-    "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.2.1",
     "swagger-jsdoc": "^6.2.1",
@@ -47,14 +44,12 @@
     "@repo/typescript-config": "*",
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.220",
-    "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/hpp": "^0.2.2",
     "@types/jest": "^28.1.6",
-    "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.45",
     "@types/supertest": "^2.0.12",
@@ -68,7 +63,6 @@
     "jest": "^28.1.1",
     "lint-staged": "^13.0.3",
     "nodemon": "^3.0.3",
-    "pm2": "^5.2.0",
     "prettier": "^2.7.1",
     "prisma": "^5.8.1",
     "supertest": "^6.2.4",

@@ -33,7 +33,7 @@ export class BaseAPI {
 
   constructor(
     configuration?: Configuration,
-    protected basePath = import.meta.env.VITE_BASE_PATH as unknown as
+    protected basePath = import.meta.env.VITE_API_URL as unknown as
       | string
       | undefined,
   ) {
